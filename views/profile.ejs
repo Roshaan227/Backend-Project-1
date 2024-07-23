@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="main w-full text-[black] min-h-screen bg-zinc-900 p-5 flex flex-col gap-5">
+        <a class="p-2 w-[6vw] rounded-lg bg-red-700 text-[white] mb-2" href="/logout">Logout</a>
+        <div class="flex items-start items-center gap-5">
+            <div class="img w-20 h-20  rounded-[50%]">
+                <img class="w-full h-full object-cover rounded-[50%]" src="/images/uploads/<%= user.profilepic %>" alt="">
+            </div>
+            <h1 class="text-3xl mb-2 text-[white]"><span class="text-[3vw] text-[red]">Hello</span>, <%=user.name%></h1>
+        </div>
+        
+        <h3 class="text-[white] opacity-[.7]">You can create a new post</h3>
+        <form class="flex flex-col" action="/post" method="post">
+            <textarea class="bg-transparent mb-2 w-1/3 resize-none border-2 outline-none border-zinc-600 rounded-lg p-5" name="content" placeholder="What's on your mind"></textarea>
+            <input class="w-[13vw] text-[white] cursor-pointer text-[1.5vw] rounded-lg h-[4vw] bg-blue-400" type="submit" value="Create new Post">
+        </form>
+        <h3 class="text-[white] opacity-[.8] flex gap-10 flex-wrap items-center">Your Posts</h3>
+        <div class="posts flex items-center gap-10 w-full flex-wrap h-full">
+            <% user.posts.forEach(function(post){ %> 
+            <div class="post p-2 rounded-lg w-[28vw] bg-zinc-700">
+                <h5 class="text-[skyblue]">@<%= user.userName %></h5>
+                <p class="text-[white] tracking-tighter opacity-[.7]"><%= post.content%></p>
+                <div class="btn flex items-center mt-2">
+                    <!-- Styled like count to the left of the Like button -->
+                    <div class="lik mr-1 px-2 py-1 text-[white] bg-green-600 rounded-full text-xs font-semibold">
+                        <%=post.likes.length%> likes
+                    </div>
+                    <a class="text-[red] text-[1.2vw] mr-4" href="/like/<%= post._id%>">
+                     <%=post.likes.indexOf(user._id)? "Like" : "Unlike"%>
+                    </a>
+                    <a class="text-[black]  text-[1.5vw] relative left-[50%] opacity-[.8]" href="/edit/<%= post._id%>">Edit</a>
+                </div>
+            </div>
+            <% })%>
+        </div>
+    </div>
+</body>
+</html>
